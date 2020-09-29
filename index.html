@@ -359,15 +359,15 @@ function set_object(){
         for(var j=0;j<10;++j){
             ban.rows[i].cells[j].innerHTML = ''
             if(ban_trap[i][j]==1){
-                ban.rows[i].cells[j].innerHTML = "<img src ='../water_shizuku.png' width='80%' height='80%' >";        
+                ban.rows[i].cells[j].innerHTML = "<img src ='https://github.com/s1270184/game/blob/master/water_shizuku.png' width='80%' height='80%' >";        
             }
             else if(ban_trap[i][j]==2){
-                ban.rows[i].cells[j].innerHTML = "<img src ='../nature_stone_ishi.png' width='80%' height='80%' >";        
+                ban.rows[i].cells[j].innerHTML = "<img src ='https://github.com/s1270184/game/blob/master/nature_stone_ishi.png' width='80%' height='80%' >";        
             }
         }
     }
-    ban.rows[hero_X].cells[hero_Y].innerHTML = "<img src ='../ohimesama_japan.png' width='100%' height='100%' >";
-    ban.rows[goal_X].cells[goal_Y].innerHTML = "<img src ='../ushiwakamaru_yoshitsune.png' width='80%' height='80%' >";
+    ban.rows[hero_X].cells[hero_Y].innerHTML = "<img src ='https://github.com/s1270184/game/blob/master/ohimesama_japan.png' width='100%' height='100%' >";
+    ban.rows[goal_X].cells[goal_Y].innerHTML = "<img src ='https://github.com/s1270184/game/blob/master/ushiwakamaru_yoshitsune.png' width='80%' height='80%' >";
 }
 function get_D(){
     var far = 0
@@ -413,7 +413,7 @@ function gameover(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src ='../gameover.jpg' width='100%' height='100%' >"
+    display.innerHTML = "<img src ='https://github.com/s1270184/game/blob/master/gameover.jpg' width='100%' height='100%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
@@ -422,7 +422,7 @@ function clear(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src 'https://s1270184.github.io/game/clear.jpg' width='100%' height='100%' >"
+    display.innerHTML = "<img src 'https://github.com/s1270184/game/blob/master/clear.jpg' width='100%' height='100%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
