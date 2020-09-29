@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" charset="utf-8">
+<html>
+<head>
+<title>桜木</title>
+    
+<style type="text/css">
+#field td {
+border: 1px solid black;
+width: 90px;
+height: 90px;
+background-color: green;
+text-align: center;
+vertical-align: middle;
+table-layout: fixed;
+padding: 1px 1px 1px 1px;
+font-size: 33px;
+}
+
+.dtable{
+display: table; /* ブロックレベル要素をtableと同じように表示にする */
+}
+.dtable_c{
+display: table-cell;　　/* ブロックレベル要素をtd(th)と同じように表示にする */
+border: 1px solid #666;
+padding: 30px 30px 30px 30px;
+}
+.water_HP {
+    font-family: 'Playfair Display', serif;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id = "display"></div>
+    <div　id="main_cavas" class="dtable">
+        <!- 盤面 ->
+        <table id="field"></table>
+        <!- ターンの表示 ->
+        
+            
+        <font size = "7"><p id = "word_HP"></p>
+        <font color="red"><p id="water_HP"></p></font>
+        <p id = "find_W"></p>
+        </font>
+    </div>
+    
+<script type="text/javascript">
+
+    var hero_X = 9//xが縦軸
+    var hero_Y = 0 //yが横軸
+    var goal_X = 0
+    var goal_Y = 9
+    var W_far = 0
+    var call = 0
+    var state = 0
+    // 初期画面起動時
+// 盤面の状況を二次元配列で定義
+    var ban_ar = [
+        [2,2,2,2,2,2,2,1,1,1],
+        [2,3,3,3,3,2,2,1,1,1],
+        [2,3,4,4,4,3,2,2,1,1],
+        [2,3,4,5,4,3,3,2,1,1],
+        [2,3,4,4,4,4,3,3,2,1],
+        [2,2,3,3,4,4,4,4,3,2],
+        [2,2,2,3,3,4,5,4,3,2],
+        [1,1,2,2,3,4,4,4,3,2],
+        [1,1,1,1,2,3,3,3,3,2],
+        [1,1,1,1,1,2,2,2,2,2]        
+    ]
+    
+    var ban_trap = [
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
+    ]
+
+    
+    var Water_HP=20
+   
+
+// HTMLで定義したテーブルを取得
+    let ban = document.getElementById('field')
+    let game = document.getElementById('main_cavas')
+    let display = document.getElementById('display')
+        
+    let GAME_STATE = 0;
+    
+    let heal = document.getElementById("heal");
+    let find_W = document.getElementById("find_W");
+    let played_BGM = 0;
+    const BGM = new Audio("BGM.ogg")
+    
+// 取得したテーブルに盤面生成
+    ban_new()
+
+// 盤面を初期化する
+    
+    set_opening()
+    
+    
+    
+    display.onclick = function(){
+        if(GAME_STATE == 0){
+            GAME_STATE = 0;
+            if(played_BGM == 0){
+                set_BGM(0);
+            }
+            ban_init();
+            display.innerHTML = "";
+            display.style.visibility ="hidden";
+            ban.style.visibility ="visible";
+
+            document.getElementById("word_HP").innerHTML= "残りHP";
+            document.getElementById("water_HP").innerHTML= Water_HP;
+        }
+        if(GAME_STATE == 1){
+            set_opening()
+        }
+        
+    }
+    
+        
+    
+// クリックした時に実行されるイベント
+    for (var x = 0; x < 10; x++) {
+        for (var y = 0; y < 10; y++) {
+                
+                var select_cell = ban.rows[x].cells[y];
+                select_cell.onclick = function() {
+                    //クリックした時移動可能な場所かをチェックする
+                    if ((check_canGo(this.parentNode.rowIndex,this.cellIndex))&&
+                        (ban_trap[this.parentNode.rowIndex][this.cellIndex] != 2) && (state == 0)){
+                        ban_set(this.parentNode.rowIndex,this.cellIndex)
+                    }
+                }
+        }
+    }
+    
+function set_BGM(menu){
+    if(menu == 0){
+        played_BGM = 1;
+        BGM.volume = 0.2
+        BGM.play()
+    }   
+    else {
+        BGM.pause();
+        BGM.currentTime = 0;
+    }
+}
+    
+    
+ 
+function set_opening(){
+    GAME_STATE = 0;
+    ban.style.visibility ="hidden";
+    display.innerHTML = "<img src ='image/title.jpg' width='100%' height='100%' >"
+    
+    
+}
+   
+    
+function ban_new() {
+    state = 0;
+    document.getElementById("find_W").style.visibility ="hidden";
+    for (var x = 0; x < 10; x++) {
+        var tr = document.createElement("tr")
+        ban.appendChild(tr)
+        for (var y = 0; y < 10; y++) {
+            var td = document.createElement("td")
+            tr.appendChild(td)
+        }
+    }
+};
+function ban_init () {
+    console.log("s");
+// 全てをクリア
+    state = 0;
+    hero_X = 9//xが縦軸
+    hero_Y = 0 //yが横軸
+    do{
+    goal_X = Math.floor(Math.random()*8) + 1
+    goal_Y = Math.floor(Math.random()*8) + 1
+    Water_HP = 20
+    }while(goal_X > 5 || goal_Y < 5)
+    document.getElementById("find_W").style.visibility ="hidden";
+    for (var x = 0; x < 10; x++) {
+        for (var y = 0; y < 10; y++) {
+            switch(ban_ar[x][y]){
+                case 1:
+                    ban.rows[x].cells[y].style.backgroundColor='greenyellow';
+                    break;
+                case 2:
+                    ban.rows[x].cells[y].style.backgroundColor='green';
+                    break;
+                case 3:
+                    ban.rows[x].cells[y].style.backgroundColor='yellow';
+                    break;
+                case 4:
+                    ban.rows[x].cells[y].style.backgroundColor='chocolate';
+                    break;
+                case 5:
+                    ban.rows[x].cells[y].style.backgroundColor='saddlebrown';
+                    break;
+                    
+            }
+            ban.rows[x].cells[y].innerHTML = '';
+            ban_trap[x][y] = 0
+            
+        }
+    }
+    
+    Set_Water();
+    set_stone();
+    
+    
+    for(var i=0;i<10;++i){
+        for(var j=0;j<10;++j){
+            if(ban_trap[i][j]==1){
+                ban.rows[i].cells[j].innerHTML = "<img src ='image/water_shizuku.png' width='100%' height='100%' >";
+        
+            }
+        }
+    }
+        
+    document.getElementById("water_HP").innerHTML= Water_HP;
+    set_object()
+    ban_ar[hero_X][hero_Y] = 1
+    
+    
+};
+function check_canGo(row_index,cell_indx){
+    return (((Math.pow(row_index-hero_X,2) <= 1) && (Math.pow(cell_indx-hero_Y,2) <= 1)))
+}
+function ban_set (row_index,cell_indx) {
+    
+    
+    
+    document.getElementById("find_W").style.visibility ="hidden";    
+    ban.rows[hero_X].cells[hero_Y].innerHTML = "";
+    
+    set_object()
+    hero_X = row_index
+    hero_Y = cell_indx
+    judge_state();
+    if(ban_trap[hero_X][hero_Y] == 1){ 
+        Water_HP+=3
+        ban_trap[hero_X][hero_Y] =0
+        set_state(0);
+    }
+    else Water_HP -= ban_ar[hero_X][hero_Y]
+    
+    document.getElementById("water_HP").innerHTML= Water_HP;
+    judge_state();
+    
+    Change_goal();
+    
+    return true
+};
+function Change_goal(){
+    
+    var direction = get_D()
+
+        
+    switch(direction){
+            
+            case 0://go up
+                if(goal_X<=0) break;
+                else goal_X--
+                break;
+            case 1://go down
+                if(goal_X>=9) break;
+                else goal_X++
+                break;
+            case 2://go left
+                if(goal_Y<=0) break;
+                else goal_Y--
+                break;
+            case 3://go down
+                if(goal_Y>=9) break;
+                else goal_Y++
+                break;
+            default: 
+                break;
+                
+    }
+    
+    set_object();
+}
+
+function Set_Water(){
+    var N_water = 5
+    var mx = 0
+    var my = 0
+    do{
+        mx = Math.floor(Math.random() * 8)+1
+        my = Math.floor(Math.random() * 8)+1
+        
+        if(ban_trap[mx][my] == 0) {
+            ban_trap[mx][my]  = 1
+            N_water--
+
+        }
+        
+    }while(N_water>0)
+    
+};
+
+function set_stone(){
+    var N_stone = 15
+    var mx = 0
+    var my = 0
+    do{
+        mx = Math.floor(Math.random() * 8)+1
+        my = Math.floor(Math.random() * 8)+1
+        
+        if(ban_trap[mx][my] == 0) {
+            ban_trap[mx][my] = 2
+            N_stone--
+
+        }
+        
+    }while(N_stone>0)
+    
+}
+
+
+function check_place(){
+    switch(ban_ar[goal_X][goal_Y]){
+        case 1:
+            document.getElementById("state").innerHTML="黄緑";
+            break;
+        case 2:
+            document.getElementById("state").innerHTML="緑";
+            break;
+        case 3:
+            document.getElementById("state").innerHTML="黄";
+            break;
+        case 4:
+            document.getElementById("state").innerHTML="薄茶";
+            break;
+        case 5:
+            document.getElementById("state").innerHTML="茶";
+            break;
+    }
+}
+    
+function set_object(){
+    if(state != 0) return
+    for(var i=0;i<10;++i){
+        for(var j=0;j<10;++j){
+            ban.rows[i].cells[j].innerHTML = ''
+            if(ban_trap[i][j]==1){
+                ban.rows[i].cells[j].innerHTML = "<img src ='image/water_shizuku.png' width='80%' height='80%' >";        
+            }
+            else if(ban_trap[i][j]==2){
+                ban.rows[i].cells[j].innerHTML = "<img src ='image/nature_stone_ishi.png' width='80%' height='80%' >";        
+            }
+        }
+    }
+    ban.rows[hero_X].cells[hero_Y].innerHTML = "<img src ='image/ohimesama_japan.png' width='100%' height='100%' >";
+    ban.rows[goal_X].cells[goal_Y].innerHTML = "<img src ='image/ushiwakamaru_yoshitsune.png' width='80%' height='80%' >";
+}
+function get_D(){
+    var far = 0
+    var ins_far=0
+    var way=5
+    for(i=0;i<4;i++){
+        switch(i){
+            case 0://go up
+                if(goal_X<=0) ins_far = 0;
+                else ins_far = Math.max(hero_X-(goal_X-1),hero_Y-goal_Y);
+                break;
+            case 1://go down
+                if(goal_X>=9) ins_far = 0;
+                else ins_far = Math.max(hero_X-(goal_X+1),hero_Y-goal_Y);
+                break;
+            case 2://go left
+                if(goal_Y<=0) ins_far = 0;
+                else ins_far = Math.max(hero_X-goal_X,hero_Y-(goal_Y-1));
+                break;
+            case 3://go down
+                if(goal_Y>=9) ins_far = 0;
+                else ins_far = Math.max(hero_X-goal_X,hero_Y-(goal_Y+1));
+                break;
+        }
+        if(ins_far>far){
+            far = ins_far;
+            way = i;
+        }
+        else if(ins_far==far){
+            if(Math.floor( Math.random() * 2 ))way = i;
+        }
+    }
+    
+    return way;
+}
+    
+function judge_state(){
+    if((hero_X==goal_X) && (hero_Y==goal_Y))clear();
+    else if(Water_HP<=0) gameover();
+}
+
+function gameover(){
+    GAME_STATE = 1;
+    display.style.visibility ="visible";
+    ban.style.visibility ="hidden";
+    display.innerHTML = "<img src ='image/gameover.jpg' width='100%' height='100%' >"
+    document.getElementById("word_HP").innerHTML= "";
+    document.getElementById("water_HP").innerHTML= "";
+}
+    
+function clear(){
+    GAME_STATE = 1;
+    display.style.visibility ="visible";
+    ban.style.visibility ="hidden";
+    display.innerHTML = "<img src ='image/clear.jpg' width='100%' height='100%' >"
+    document.getElementById("word_HP").innerHTML= "";
+    document.getElementById("water_HP").innerHTML= "";
+}
+
+function set_state(check){
+    document.getElementById("find_W").style.visibility ="visible";
+    if(check==0){
+        document.getElementById("find_W").innerHTML= "水があった";
+    }else if(check == 1){
+        document.getElementById("find_W").innerHTML= "再会できた";
+        
+    }else if(check == 2){
+        document.getElementById("find_W").innerHTML= "体力が尽きてしまった";
+        
+    }
+    
+    
+}
+    
+function backToTop() {
+var x1 = x2 = x3 = 0;
+var y1 = y2 = y3 = 0;
+if (document.documentElement) {
+x1 = document.documentElement.scrollLeft || 0;
+y1 = document.documentElement.scrollTop || 0;
+}
+if (document.body) {
+x2 = document.body.scrollLeft || 0;
+y2 = document.body.scrollTop || 0;
+}
+x3 = window.scrollX || 0;
+y3 = window.scrollY || 0;
+var x = Math.max(x1, Math.max(x2, x3));
+var y = Math.max(y1, Math.max(y2, y3));
+window.scrollTo(Math.floor(x / 2), Math.floor(y / 2));
+if (x > 0 || y > 0) {
+window.setTimeout("backToTop()", 25);
+}
+}
+
+
+
+</script>
+    <ul id = "sozai">
+        使用素材
+        <li>イラスト : <a href = "https://www.irasutoya.com">いらすとや</a></li>
+        <li>BGM : <a href = "https://maoudamashii.jokersounds.com">魔王魂</a></li>
+    </ul>
+</body>
+</html>
