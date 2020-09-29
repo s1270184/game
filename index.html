@@ -98,11 +98,10 @@ padding: 30px 30px 30px 30px;
     let heal = document.getElementById("heal");
     let find_W = document.getElementById("find_W");
     let played_BGM = 0;
-    var BGM = new Audio('./BGM.ogg');
+    var BGM = new Audio('https://s1270184.github.io/game/BGM.ogg');
+    BGM.volume = 0.2
+    BGM.play();
     
-    if(played_BGM == 0){
-       set_BGM(0);
-    }
     
 // 取得したテーブルに盤面生成
     ban_new();
@@ -147,17 +146,7 @@ padding: 30px 30px 30px 30px;
         }
     }
     
-function set_BGM(menu){
-    if(menu == 0){
-        played_BGM = 1;
-        BGM.volume = 0.2
-        BGM.play();
-    }   
-    else {
-        BGM.pause();
-        BGM.currentTime = 0;
-    }
-}
+
     
     
  
