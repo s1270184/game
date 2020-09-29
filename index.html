@@ -98,7 +98,7 @@ padding: 30px 30px 30px 30px;
     let heal = document.getElementById("heal");
     let find_W = document.getElementById("find_W");
     let played_BGM = 0;
-    var BGM = new Audio('https://s1270184.github.io/game/BGM.ogg');
+    var BGM = new Audio('https://sasahokke.github.io/game/BGM.ogg');
     BGM.volume = 0.2
     
     
@@ -154,7 +154,7 @@ padding: 30px 30px 30px 30px;
 function set_opening(){
     GAME_STATE = 0;
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src ='https://s1270184.github.io/game/title.png' width='90%' height='90%' >"
+    display.innerHTML = "<img src ='https://sasahokke.github.io/game/title.png' width='90%' height='90%' >"
     
     
 }
@@ -217,7 +217,7 @@ function ban_init () {
     for(var i=0;i<10;++i){
         for(var j=0;j<10;++j){
             if(ban_trap[i][j]==1){
-                ban.rows[i].cells[j].innerHTML = "<img src ='https://s1270184.github.io/game/water_shizuku.png' width='100%' height='100%' >";
+                ban.rows[i].cells[j].innerHTML = "<img src ='https://sasahokke.github.io/game/water_shizuku.png' width='100%' height='100%' >";
         
             }
         }
@@ -352,15 +352,15 @@ function set_object(){
         for(var j=0;j<10;++j){
             ban.rows[i].cells[j].innerHTML = ''
             if(ban_trap[i][j]==1){
-                ban.rows[i].cells[j].innerHTML = "<img src ='https://s1270184.github.io/game/water_shizuku.png' width='80%' height='80%' >";        
+                ban.rows[i].cells[j].innerHTML = "<img src ='https://sasahokke.github.io/game/water_shizuku.png' width='80%' height='80%' >";        
             }
             else if(ban_trap[i][j]==2){
-                ban.rows[i].cells[j].innerHTML = "<img src ='https://s1270184.github.io/game/nature_stone_ishi.png' width='80%' height='80%' >";        
+                ban.rows[i].cells[j].innerHTML = "<img src ='https://sasahokke.github.io/game/nature_stone_ishi.png' width='80%' height='80%' >";        
             }
         }
     }
-    ban.rows[hero_X].cells[hero_Y].innerHTML = "<img src ='https://s1270184.github.io/game/ohimesama_japan.png' width='80%' height='80%' >";
-    ban.rows[goal_X].cells[goal_Y].innerHTML = "<img src ='https://s1270184.github.io/game/ushiwakamaru_yoshitsune.png' width='80%' height='80%' >";
+    ban.rows[hero_X].cells[hero_Y].innerHTML = "<img src ='https://sasahokke.github.io/game/ohimesama_japan.png' width='80%' height='80%' >";
+    ban.rows[goal_X].cells[goal_Y].innerHTML = "<img src ='https://sasahokke.github.io/game/ushiwakamaru_yoshitsune.png' width='80%' height='80%' >";
 }
 function get_D(){
     var far = 0
@@ -406,7 +406,7 @@ function gameover(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src = 'https://s1270184.github.io/game/gameover.png' width='90%' height='90%' >"
+    display.innerHTML = "<img src = 'https://sasahokke.github.io/game/gameover.png' width='90%' height='90%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
@@ -415,7 +415,7 @@ function clear(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src ='https://s1270184.github.io/game/clear.png' width='90%' height='90%' >"
+    display.innerHTML = "<img src ='https://sasahokke.github.io/game/clear.png' width='90%' height='90%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
