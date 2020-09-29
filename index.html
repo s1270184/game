@@ -45,9 +45,7 @@ padding: 30px 30px 30px 30px;
         <p id = "find_W"></p>
         </font>
     </div>
-    <audio src="https://github.com/s1270184/game/blob/master/BGM.ogg" autoplay loop>
-    あなたのブラウザーは <code>audio</code>要素をサポートしていません。
-    </audio>
+    
     
 <script type="text/javascript">
 
@@ -100,18 +98,18 @@ padding: 30px 30px 30px 30px;
     let heal = document.getElementById("heal");
     let find_W = document.getElementById("find_W");
     let played_BGM = 0;
-    const BGM = new Audio('https://github.com/s1270184/game/blob/master/BGM.ogg');
+    const BGM = new Audio('BGM.ogg');
     
     if(played_BGM == 0){
        set_BGM(0);
     }
     
 // 取得したテーブルに盤面生成
-    ban_new()
+    ban_new();
 
 // 盤面を初期化する
     
-    set_opening()
+    set_opening();
     
     
     
@@ -127,7 +125,7 @@ padding: 30px 30px 30px 30px;
             document.getElementById("water_HP").innerHTML= Water_HP;
         }
         if(GAME_STATE == 1){
-            set_opening()
+            set_opening();
         }
         
     }
@@ -153,7 +151,7 @@ function set_BGM(menu){
     if(menu == 0){
         played_BGM = 1;
         BGM.volume = 0.2
-        BGM.play()
+        BGM.play();
     }   
     else {
         BGM.pause();
@@ -185,7 +183,7 @@ function ban_new() {
     }
 };
 function ban_init () {
-    console.log("s");
+
 // 全てをクリア
     state = 0;
     hero_X = 9//xが縦軸
@@ -269,6 +267,7 @@ function ban_set (row_index,cell_indx) {
     
     return true
 };
+    
 function Change_goal(){
     
     var direction = get_D()
