@@ -100,7 +100,7 @@ padding: 30px 30px 30px 30px;
     let played_BGM = 0;
     var BGM = new Audio('https://s1270184.github.io/game/BGM.ogg');
     BGM.volume = 0.2
-    BGM.play();
+    
     
     
 // 取得したテーブルに盤面生成
@@ -114,6 +114,7 @@ padding: 30px 30px 30px 30px;
     
     display.onclick = function(){
         if(GAME_STATE == 0){
+            BGM.play();
             
             ban_init();
             display.innerHTML = "";
