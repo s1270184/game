@@ -2,13 +2,13 @@
 <meta http-equiv="content-type" charset="utf-8">
 <html>
 <head>
-<title>桜木姫ゲーム</title>
-<meta name="viewport" content="user-scalable=no">
+<title>桜木</title>
+    
 <style type="text/css">
 #field td {
 border: 1px solid black;
-width: 90px;
-height: 90px;
+width: 60px;
+height: 50px;
 background-color: green;
 text-align: center;
 vertical-align: middle;
@@ -31,7 +31,7 @@ padding: 30px 30px 30px 30px;
 }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="user-scalable=no">
 </head>
 
 <body>
@@ -42,10 +42,18 @@ padding: 30px 30px 30px 30px;
         <!- ターンの表示 ->
         
             
-        <font size = "7"><p id = "word_HP"></p>
-        <font color="red"><p id="water_HP"></p></font>
+        <font size = "7">残りHP<p id="water_HP"></p></font>
         <p id = "find_W"></p>
-        </font>
+    </div>
+    
+    <div>
+        <h1> ルール説明</h1>
+        <h2><p>桜木姫様の周辺１マスをクリックすると姫様が移動します。</p>
+            <p>左下の桜木姫様は移動する時に移動先のマスの色に応じてに体力が減ります。</p>
+            <p>水があるマスに止まると体力が回復します</p>
+            <p>移動している皇子と同じマスに止れると勝ち‼︎</p>
+        </h2>
+    
     </div>
     
     
@@ -156,7 +164,9 @@ padding: 30px 30px 30px 30px;
 function set_opening(){
     GAME_STATE = 0;
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src ='https://sasahokke.github.io/game/title.png' width='100%' height='100%' >";
+    display.innerHTML = "<img src ='https://sasahokke.github.io/game/title.png' width='70%' height='70%' >"
+    
+    
 }
    
     
@@ -406,7 +416,7 @@ function gameover(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src = 'https://sasahokke.github.io/game/gameover.png' width='90%' height='90%' >"
+    display.innerHTML = "<img src = 'https://sasahokke.github.io/game/gameover.png' width='70%' height='70%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
@@ -415,7 +425,7 @@ function clear(){
     GAME_STATE = 1;
     display.style.visibility ="visible";
     ban.style.visibility ="hidden";
-    display.innerHTML = "<img src ='https://sasahokke.github.io/game/clear.png' width='90%' height='90%' >"
+    display.innerHTML = "<img src ='https://sasahokke.github.io/game/clear.png' width='70%' height='70%' >"
     document.getElementById("word_HP").innerHTML= "";
     document.getElementById("water_HP").innerHTML= "";
 }
@@ -459,12 +469,6 @@ window.setTimeout("backToTop()", 25);
 
 
 </script>
-    <div>
-    <h1> おすすめポイント</h1>
-        <p>完全なる運ゲーに見える致命的なクソゲー</p>
-    <h1>不具合</h1>
-        <p>紙芝居方式のため描画に時間がかかります</p>
-    </div>
     <ul id = "sozai">
         <h1>thanks</h1>
         <li>イラスト : <a href = "https://www.irasutoya.com">いらすとや</a></li>
